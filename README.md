@@ -1,1 +1,1 @@
-# 06-node-rest-server
+# 08-node-products
