@@ -40,8 +40,26 @@
           },
           {
             "in": "query",
+            "name": "filter[lastName]",
+            "description": "filter users by last name.",
+            "required": false,
+            "Schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter[birthdate]",
+            "description": "filter users by birthdate.",
+            "required": false,
+            "Schema": {
+              "type": "date"
+            }
+          },
+          {
+            "in": "query",
             "name": "options[limit]",
-            "description": "a limit of users per page",
+            "description": "The limit of users displayed (Use it for pagination).",
             "required": false,
             "Schema": {
               "type": "string"
@@ -50,7 +68,7 @@
           {
             "in": "query",
             "name": "options[offset]",
-            "description": "index to start search of users.",
+            "description": "index to start the search of users (Use it for pagination).",
             "required": false,
             "Schema": {
               "type": "string"
