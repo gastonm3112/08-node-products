@@ -81,10 +81,25 @@ const putRequestValidations = [
 	_roleValid,
 	_dateValid,
 	_validationResult,
-]
+];
+
+const getRequestValidations = [
+	_idrequired,
+	_idIsMongoDB,
+	_idExist,
+	_validationResult,
+];
+
+const deleteRequestValidations = [
+	_idrequired,
+	_idIsMongoDB,
+	_idExist,
+	_validationResult,
+];
 
 module.exports = {
 	postRequestValidations,
 	putRequestValidations,
-
+	getRequestValidations,
+	deleteRequestValidations
 };
