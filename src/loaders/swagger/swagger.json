@@ -22,7 +22,7 @@
   "tags": [
     {
       "name": "users",
-      "description": "Operations about users."
+      "description": "Operations with Users. You can get, create, update and delete Users with the correct values"
     }
   ],
   "paths": {
@@ -76,24 +76,24 @@
           }
         ],
         "tags": ["users"],
-        "summary": "Return a list of existing users",
-        "description": "",
+        "summary": "Return a list of existing users with optional filters and pagination",
+        "description": "## You can use filters:\n - filter[name] {string}\n - filter[lastname] {string}:\n - filter[birthdate] {Date}: Date with Format MM-DD-YYYY\n ## You can use the pagination options :\n - options[limit] {integer}: the limit of user you want to see per page\n - options[offset] {integer}: the index you want to start your search\n ## Return values:\n - TotalDocs {number}: Total number of users in the collection\n - offset {number}: Only if specified or default page / offset values were used\n - limit {number}: Limit that was used\n - totalPages {number}: Total number of pages\n - page {number}: Current page number\n - pagingCounter {number}: The starting index/serial/chronological number of first document in current page. (Eg: if page=2 and limit=10, then pagingCounter will be 11)\n - hasPrevPage {bool}: Availability of previous page\n - hasNextPage {bool}: Availability of next page\n - prevPage {number}: Previous page number if available or NULL\n - nextPage {number}: Next page number if available or NULL",
         "responses": {
           "200": {
-            "description": "A JSON Array of users.",
+            "description": "Status: OK",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/UserPagination"
                   }
-                }
+                }              
               }
             }
           },
           "500": {
-            "description": "Error message in JSON",
+            "description": "Error message from DB",
             "content": {
               "application/json": {
                 "schema": {
@@ -120,7 +120,17 @@
         },
         "responses": {
           "201": {
-            "description": "User created."
+            "description": "User created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }              
+              }
+            }
           },
           "400": {
             "description": "Error message in JSON",
@@ -278,7 +288,17 @@
         ],
         "responses": {
           "200": {
-            "description": "User deleted."
+            "description": "User deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }              
+              }
+            }
           },
           "400": {
             "description": "Error message in JSON",
@@ -350,17 +370,123 @@
           "birthdate": {
             "description": "The user birthdate.",
             "type": "date",
-            "example": "YY-MM-DD -> 1989-12-31"
+            "example": "1989-12-31"
           },
           "createdAt": {
             "description": "date of the user creation.",
             "type": "date",
-            "example": "YY-MM-DD -> 1989-12-31"
+            "example": "1989-12-31"
           },
           "updatedAt": {
             "description": "date of the user update.",
             "type": "date",
-            "example": "YY-MM-DD -> 1989-12-31"
+            "example": "1989-12-31"
+          }
+        }
+      },
+      "UserPagination": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "role": {
+            "description": "the user role",
+            "type": "string",
+            "example": "Default value: USER_ROLE"
+          },
+          "enable": {
+            "description": "User is enabled?",
+            "type": "boolean",
+            "example": "true"
+          },
+          "_id": {
+            "description": "The user id.",
+            "type": "string",
+            "example": "25acd789def..."
+          },
+          "name": {
+            "description": "The user name.",
+            "type": "string",
+            "example": "Gastón"
+          },
+          "lastName": {
+            "description": "The user last name.",
+            "type": "string",
+            "example": "Martinez"
+          },
+          "email": {
+            "description": "The user email.",
+            "type": "string",
+            "example": "example@mail.com"
+          },
+          "password": {
+            "description": "The user password.",
+            "type": "string",
+            "example": "$2b$10$om4Aa5l2.QdSip87EdJM"
+          },
+          "birthdate": {
+            "description": "The user birthdate.",
+            "type": "date",
+            "example": "1989-12-31"
+          },
+          "createdAt": {
+            "description": "date of the user creation.",
+            "type": "date",
+            "example": "1989-12-31"
+          },
+          "updatedAt": {
+            "description": "date of the user update.",
+            "type": "date",
+            "example": "1989-12-31"
+          },
+          "totalDocs": {
+            "description": "The total of users from DB",
+            "type": "integer",
+            "example": "5"
+          },
+          "offset": {
+            "description": "index of the user you start the search",
+            "type": "integer",
+            "example": "0"
+          },
+          "limit": {
+            "description": "The limit of users per page",
+            "type": "integer",
+            "example": "10"
+          },
+          "totalPages": {
+            "description": "The total of pages with users",
+            "type": "integer",
+            "example": "1"
+          },
+          "page": {
+            "description": "The page you are at",
+            "type": "integer",
+            "example": "1"
+          },
+          "pagingCounter": {
+            "description": "The count of pages",
+            "type": "integer",
+            "example": "1"
+          },
+          "hasPrevPage": {
+            "description": "Tells you if you have previous pages",
+            "type": "boolean",
+            "example": "false"
+          },
+          "hastNextPage": {
+            "description": "Tells you if you have next pages",
+            "type": "boolean",
+            "example": "false"
+          },
+          "prevPage": {
+            "description": "Previous page if available",
+            "type": "integer",
+            "example": "1"
+          },
+          "nextPage": {
+            "description": "Next page if available",
+            "type": "integer",
+            "example": "null"
           }
         }
       },
@@ -391,7 +517,7 @@
           "birthdate": {
             "description": "The user birthdate.",
             "type": "date",
-            "example": "MM-DD-YYY -> 12/31/1989"
+            "example": "12/31/1989"
           }
         }
       },
