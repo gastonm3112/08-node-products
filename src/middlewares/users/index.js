@@ -42,6 +42,7 @@ const _dateValid = check('birthdate').optional().isDate('MM-DD-YYYY');
 
 const _idrequired = check('id').not().isEmpty();
 const _idIsMongoDB = check('id').isMongoId();
+
 const _idExist = check('id').custom(
 	async (id = '') => {
 		const userFound = await userService.findById(id);
