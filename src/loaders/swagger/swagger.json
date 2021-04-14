@@ -98,7 +98,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorDB"
                 }
               }
             }
@@ -122,13 +122,24 @@
           "201": {
             "description": "User created."
           },
+          "400": {
+            "description": "Error message in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RequestError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error message in JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorDB"
                 }
               }
             }
@@ -166,13 +177,24 @@
               }
             }
           },
+          "400": {
+            "description": "Error message in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RequestError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error message in JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorDB"
                 }
               }
             }
@@ -215,13 +237,24 @@
               }
             }
           },
+          "400": {
+            "description": "Error message in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RequestError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error message in JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorDB"
                 }
               }
             }
@@ -247,13 +280,24 @@
           "200": {
             "description": "User deleted."
           },
+          "400": {
+            "description": "Error message in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RequestError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error message in JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorDB"
                 }
               }
             }
@@ -320,21 +364,6 @@
           }
         }
       },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "description": "Error code",
-            "type": "integer",
-            "example": "500"
-          },
-          "message": {
-            "description": "Error message",
-            "type": "string",
-            "example": "Search failed: description of the error"
-          }
-        }
-      },
       "UserCreateAndUpdate": {
         "required": ["id"],
         "type": "object",
@@ -362,7 +391,37 @@
           "birthdate": {
             "description": "The user birthdate.",
             "type": "date",
-            "example": "YY-MM-DD -> 1989-12-31"
+            "example": "MM-DD-YYY -> 12/31/1989"
+          }
+        }
+      },
+      "RequestError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "integer",
+            "example": "400"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string",
+            "example": "Validation Errors: Invalid id, invalid email, etc"
+          }
+        }
+      },
+      "ErrorDB": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "integer",
+            "example": "500"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string",
+            "example": "Search failed: description of the error"
           }
         }
       }
