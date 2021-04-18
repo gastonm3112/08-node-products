@@ -9,6 +9,7 @@ class ExpressServer {
     this.app = express();
     this.port = config.port;
     this.basePathUser = `${config.api.prefix}/users`;
+    this.basePathAuth = `${config.api.prefix}/auth`;
 
     this._middlewares();
 
@@ -30,6 +31,7 @@ class ExpressServer {
       res.status(200).end();
     });
 
+    this.app.use(this.basePathAuth, require('../../routes/auth'));
     this.app.use(this.basePathUser, require('../../routes/users'));
   }
 
