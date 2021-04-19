@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userService = require('./userService');
 const AppError = require('../errors/appError');
 const config = require('../config');
+const logger = require('../loaders/logger');
 
 const login = async (email, password) => {
 
@@ -42,11 +43,50 @@ const login = async (email, password) => {
 
 }
 
+const validToken = async (token) => {
+
+    try {
+        //Validar que token venga como parametro
+        if (!token) {
+            throw new AppError('Authentication failed! Token required', 401);
+        }
+
+        logger.info(`Token received: ${token}`)
+
+        //Validar que el token sea íntegro (Que siga vivo)
+        let id;
+        try {
+            const obj = jwt.verify(token, config.auth.secret);
+            id = obj.id;
+        } catch (verifyError) {
+            throw new AppError('Authentication failed! Invalid Token', 401);
+        }
+
+        //Validar si hay usuario en DB
+        const user = await userService.findById(id);
+        if (!user) {
+            throw new AppError('Authentication failed! User not found', 401);
+        }
+
+        //Validar si el usuario está habilitado
+        if (!user.enable) {
+            throw new AppError('Authentication failed! User disabled', 401);
+        }
+
+        //Retornar el usuario
+        return user;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 _encrypt = (id) => {
     return jwt.sign({ id }, config.auth.secret, { expiresIn: config.auth.ttl });
 
 }
 
 module.exports = {
-    login
+    login,
+    validToken
 }
