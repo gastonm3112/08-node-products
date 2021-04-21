@@ -81,6 +81,13 @@ const validToken = async (token) => {
     }
 }
 
+const validRole = (user, ...roles) => {
+    if (!roles.includes(user.role)) {
+        throw new AppError('Authorization failed! User without privileges', 403);
+    }
+    return true;
+}
+
 _encrypt = (id) => {
     return jwt.sign({ id }, config.auth.secret, { expiresIn: config.auth.ttl });
 
@@ -88,5 +95,6 @@ _encrypt = (id) => {
 
 module.exports = {
     login,
-    validToken
+    validToken,
+    validRole
 }
