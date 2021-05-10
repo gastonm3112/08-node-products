@@ -1,7 +1,10 @@
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 const AppError = require('../../errors/appError');
 const userService = require('../../services/userService');
-const { ROLES } = require('../../constants');
+const { ROLES, ADMIN_ROLE } = require('../../constants');
+const { validationResult } = require('../commons');
+const { validJWT, hasRole } = require('../auth');
+
 
 const _nameRequired = check('name', 'Name required').not().isEmpty();
 const _lastNameRequired = check('lastName', 'Last Name required').not().isEmpty();
@@ -42,7 +45,6 @@ const _dateValid = check('birthdate').optional().isDate('MM-DD-YYYY');
 
 const _idrequired = check('id').not().isEmpty();
 const _idIsMongoDB = check('id').isMongoId();
-
 const _idExist = check('id').custom(
 	async (id = '') => {
 		const userFound = await userService.findById(id);
@@ -53,15 +55,11 @@ const _idExist = check('id').custom(
 );
 
 
-const _validationResult = (req, res, next) => {
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
-		throw new AppError('Validation Errors', 400, errors.errors);
-	}
-	next();
-};
+
 
 const postRequestValidations = [
+	validJWT,
+	hasRole(ADMIN_ROLE),
 	_nameRequired,
 	_lastNameRequired,
 	_emailRequired,
@@ -70,10 +68,12 @@ const postRequestValidations = [
 	_passwordRequired,
 	_roleValid,
 	_dateValid,
-	_validationResult,
+	validationResult,
 ];
 
 const putRequestValidations = [
+	validJWT,
+	hasRole(ADMIN_ROLE),
 	_idrequired,
 	_idIsMongoDB,
 	_idExist,
@@ -81,26 +81,34 @@ const putRequestValidations = [
 	_optionalEmailExist,
 	_roleValid,
 	_dateValid,
-	_validationResult,
+	validationResult,
 ];
 
 const getRequestValidations = [
+	validJWT,
 	_idrequired,
 	_idIsMongoDB,
 	_idExist,
-	_validationResult,
+	validationResult,
+];
+
+const getAllRequestValidations = [
+	validJWT,
 ];
 
 const deleteRequestValidations = [
+	validJWT,
+	hasRole(ADMIN_ROLE),
 	_idrequired,
 	_idIsMongoDB,
 	_idExist,
-	_validationResult,
+	validationResult,
 ];
 
 module.exports = {
 	postRequestValidations,
 	putRequestValidations,
 	getRequestValidations,
+	getAllRequestValidations,
 	deleteRequestValidations
 };
