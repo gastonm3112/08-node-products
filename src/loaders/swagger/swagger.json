@@ -3,7 +3,7 @@
   "info": {
     "title": "Users and products Api",
     "description": "## This a api for users and products",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "contact": {
       "email": "gastonm3112@gmail.com"
     }
@@ -88,7 +88,7 @@
                   "items": {
                     "$ref": "#/components/schemas/UserPagination"
                   }
-                }              
+                }
               }
             }
           },
@@ -128,7 +128,7 @@
                   "items": {
                     "$ref": "#/components/schemas/User"
                   }
-                }              
+                }
               }
             }
           },
@@ -296,7 +296,7 @@
                   "items": {
                     "$ref": "#/components/schemas/User"
                   }
-                }              
+                }
               }
             }
           },
